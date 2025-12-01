@@ -20,6 +20,8 @@
       --container-pad:20px;
     }
     *{box-sizing:border-box}
+    /* fix iOS text auto-zoom behaviour */
+    html { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; text-size-adjust: 100%; }
     html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background: linear-gradient(180deg,var(--bg-1) 0%, var(--bg-2) 100%);color:#e6eef6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,0)}
     .container{max-width:var(--max-width);margin:0 auto;padding:28px var(--container-pad);width:100%;box-sizing:border-box;min-height:100vh}
 
@@ -99,8 +101,8 @@
     .card.reveal{opacity:0;transform:translateY(22px) scale(.995)}
     .card.reveal.in{opacity:1;transform:none;transition:opacity .8s cubic-bezier(.2,.9,.3,1),transform .9s cubic-bezier(.2,.9,.3,1)}
 
-    /* Modal layout: make form body scrollable and actions sticky above safe-area */
-    .modal-backdrop{position:fixed;inset:0;display:none;align-items:flex-start;justify-content:center;padding:24px;z-index:60}
+    /* modal: now column flex + body scroll area to keep actions visible above iPhone bar */
+    .modal-backdrop{position:fixed;inset:0;display:none;align-items:flex-start;justify-content:center;padding:24px;z-index:60;touch-action: none}
     .modal-backdrop.show{display:flex}
     .backdrop-layer{position:absolute;inset:0;background:linear-gradient(90deg, rgba(2,6,23,0.6), rgba(2,6,23,0.85));backdrop-filter: blur(6px);transition:opacity .28s ease;opacity:0}
     .modal{
@@ -112,7 +114,7 @@
       box-shadow:var(--shadow-strong);
       box-sizing:border-box;
       margin:28px auto;
-      /* shorten vertical height to avoid iPhone bottom bar overlap */
+      /* reserve vertical space so modal doesn't go under iPhone bar */
       max-height: calc(100vh - 100px - env(safe-area-inset-bottom,0));
       display:flex;
       flex-direction:column;
@@ -121,32 +123,45 @@
       transform:translateY(18px) scale(.96);
       opacity:0;
       transition:transform .42s cubic-bezier(.2,.9,.2,1),opacity .36s ease;
-      padding:18px 22px;
+      padding:18px 26px;
+      touch-action: none;
     }
     .modal-backdrop.show .backdrop-layer{opacity:1}
     .modal-backdrop.show .modal{transform:translateY(0) scale(1);opacity:1}
 
-    .modal header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:0 0 auto}
+    /* scrollable body inside modal */
+    .modal-body{
+      overflow:auto;
+      -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+      overscroll-behavior: contain; /* contain overscroll to this element */
+      touch-action: pan-y; /* allow vertical scrolling only */
+      padding-bottom: calc(18px + env(safe-area-inset-bottom, 12px));
+      flex: 1 1 auto;
+      overflow-x: hidden; /* avoid horizontal movement */
+    }
+
+    .modal header{display:flex;align-items:center;justify-content:space-between;gap:12px}
     .modal #closeModal{font-size:18px;padding:8px 10px;border-radius:10px}
 
-    /* scrollable content area with extra padding-bottom to ensure sticky controls are visible */
-    .modal-body{overflow:auto;flex:1 1 auto;padding-bottom: calc(22px + env(safe-area-inset-bottom,12px));}
-
-    /* sticky actions: will remain visible above safe-area / iPhone bar */
+    /* make form-actions sticky inside modal-body so it's always visible above iPhone controls */
     .modal .form-actions{
       display:flex;gap:10px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap;
       position:sticky;
-      bottom: calc(10px + env(safe-area-inset-bottom,12px));
+      bottom: calc(12px + env(safe-area-inset-bottom, 12px));
       z-index: 30;
       background: linear-gradient(transparent, rgba(0,0,0,0));
       padding-top:6px;
     }
 
     label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    /* ensure inputs have at least 16px font-size to prevent iOS auto-zoom on focus */
+    input[type=text],input[type=email],input[type=tel],input[type=number],select,input[readonly],input:not([type]),textarea,button{
+      font-size:16px;
+    }
     input[type=text],input[type=email],input[type=tel],input[type=number],select,input[readonly],input:not([type]){width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:inherit;font-size:14px;outline:none;box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 28px rgba(2,6,23,0.45);transition: box-shadow .18s ease, border-color .12s ease, transform .06s ease}
     input:focus, select:focus{border-color: rgba(96,165,250,0.7);box-shadow: 0 18px 56px rgba(96,165,250,0.06), 0 6px 24px rgba(2,6,23,0.5);transform: translateY(-2px)}
 
-    textarea{width:100%;min-height:140px;max-height:420px;padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:inherit;font-size:15px;line-height:1.6;outline:none;box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 14px 40px rgba(2,6,23,0.45);transition:box-shadow .18s ease,border-color .12s ease,transform .08s ease,height .08s ease;resize:vertical;overflow:auto;font-family:inherit}
+    textarea{width:100%;min-height:180px;max-height:520px;padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:inherit;font-size:15px;line-height:1.6;outline:none;box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 14px 40px rgba(2,6,23,0.45);transition:box-shadow .18s ease,border-color .12s ease,transform .08s ease,height .08s ease;resize:vertical;overflow:auto;font-family:inherit}
     textarea:focus{border-color: rgba(96,165,250,0.75);box-shadow: 0 26px 80px rgba(96,165,250,0.08), inset 0 1px 0 rgba(255,255,255,0.02);transform: translateY(-3px) scale(1.01)}
 
     .outputs{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;margin-top:12px;font-size:14px}
@@ -154,6 +169,9 @@
 
     footer{margin-top:36px;color:var(--muted);font-size:13px;text-align:center}
 
+    @media (prefers-reduced-motion:reduce){.bg-orb, .bg-wave, .card, .modal, .hero-card, .card.reveal, .reveal { animation: none !important; transition: none !important; transform: none !important; }}
+
+    /* small adjustments so elements scale nicely */
     @media (max-width:980px){
       .hero{grid-template-columns:1fr;gap:20px}
       .hero-card{padding:22px;border-radius:18px}
@@ -196,14 +214,12 @@
       .grid{gap:12px}
       .card{padding:12px;border-radius:14px}
       .modal{border-radius:12px;padding:12px}
-      .modal-body{padding-bottom: calc(14px + env(safe-area-inset-bottom,12px))}
+      .modal-body{padding-bottom: calc(12px + env(safe-area-inset-bottom,12px))}
       .cta{padding:12px}
       .rate{font-size:16px}
       .form-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
       .form-two-col.stack-mobile{grid-template-columns:1fr}
     }
-
-    @media (prefers-reduced-motion:reduce){.bg-orb, .bg-wave, .card, .modal, .hero-card, .card.reveal, .reveal { animation: none !important; transition: none !important; transform: none !important; }}
   </style>
 </head>
 <body>
@@ -297,7 +313,7 @@
             </div>
 
             <div class="subjects" aria-hidden>
-              <span class="subject">Japonais</span>
+                <span class="subject">Japonais</span>
               <span class="subject">Mathématiques</span>
               <span class="subject">Anglais</span>
             </div>
@@ -327,10 +343,10 @@
             </div>
 
             <div class="subjects">
-              <span class="subject">Japonais</span>
-              <span class="subject">Mathématiques</span>
-              <span class="subject">Français</span>
-              <span class="subject">Anglais</span>
+                <span class="subject">Japonais</span>
+                <span class="subject">Mathématiques</span>
+                <span class="subject">Français</span>
+                <span class="subject">Anglais</span>
             </div>
 
             <p class="muted" style="margin-top:10px" data-i18n="descTokuma">Approche structurée — excellent résultats.</p>
@@ -389,12 +405,14 @@
             </div>
           </header>
 
+          <!-- modal-body is scrollable; form-actions inside form are sticky to bottom of this area -->
           <div class="modal-body">
             <form id="bookingForm" novalidate>
               <fieldset style="border:0;padding:0;margin-top:12px">
                 <legend class="muted" data-i18n="fieldsetLegend">Informations de réservation</legend>
 
-                <div class="form-two-col" style="margin-top:8px">
+                <!-- use helper class for responsive columns -->
+                <div class="form-two-col" style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
                   <div>
                     <label for="profSelect" data-i18n="labelChooseProf">Choisir un professeur *</label>
                     <select id="profSelect" required>
@@ -429,7 +447,7 @@
 
                 <hr style="margin:14px 0;border:0;border-top:1px solid rgba(255,255,255,0.03)">
 
-                <div class="form-two-col" style="gap:12px">
+                <div class="form-two-col" style="gap:12px;display:grid;grid-template-columns:1fr 1fr">
                   <div>
                     <label for="childLast" data-i18n="labelChildLast">Nom de famille (enfant) *</label>
                     <input id="childLast" required>
@@ -466,7 +484,7 @@
                     <input id="phone" type="tel" inputmode="tel" placeholder="06XXXXXXXX" required>
                   </div>
 
-                  <!-- Adresse + Code postal -->
+                  <!-- Adresse + postal (ajoutés) -->
                   <div>
                     <label for="address" data-i18n="labelAddress">Adresse du domicile *</label>
                     <input id="address" data-i18n-placeholder="placeholderAddress" placeholder="Ex : 12 avenue des Champs-Élysées, 75008 Paris" required>
@@ -640,10 +658,15 @@
       }
     };
 
+    // current language (default FR)
     let currentLang = 'fr';
 
-    function isInsideOutputs(el){ return el && (el.id === 'outputs' || el.closest && el.closest('#outputs')); }
+    // utility: check if element is inside outputs -> skip translation
+    function isInsideOutputs(el){
+      return el && (el.id === 'outputs' || el.closest && el.closest('#outputs'));
+    }
 
+    // translate page (excluding #outputs)
     function translatePage(lang){
       const map = translations[lang] || translations.fr;
       document.querySelectorAll('[data-i18n]').forEach(el=>{
@@ -671,6 +694,7 @@
       langToggle.setAttribute('aria-pressed', lang === 'jp' ? 'true' : 'false');
     }
 
+    // attach ripples to buttons
     function attachRipples(){
       document.querySelectorAll('.btn').forEach(btn=>{
         if(btn.__rippleAttached) return;
@@ -695,6 +719,7 @@
     }
     attachRipples();
 
+    // particle burst
     function burstParticles(target, colorPalette = ['#fff','#ffd36b','#6ee7b7','#60a5fa']){
       const rect = target.getBoundingClientRect();
       const parent = document.body;
@@ -730,11 +755,17 @@
       }
     }
 
+    // modal open/close
     function openModal(prefill){
       modal.classList.add('show');
       modal.setAttribute('aria-hidden','false');
       document.body.style.overflow = 'hidden';
-      if(prefill){ profSelect.value = prefill; setTimeout(()=> profSelect.dispatchEvent(new Event('change')),40); }
+      // disable background touchmove while modal open (but allow inside modal-body)
+      enableModalTouchLock();
+      if(prefill){
+        profSelect.value = prefill;
+        setTimeout(()=> profSelect.dispatchEvent(new Event('change')),40);
+      }
       setTimeout(()=> profSelect.focus(), 140);
     }
     function closeModalFn(){
@@ -747,8 +778,10 @@
       outputs.hidden = true; outputs.innerHTML = '';
       const t = document.getElementById('extra'); if(t) t.style.height = '';
       translatePage(currentLang);
+      disableModalTouchLock();
     }
 
+    // populate times when professor changes
     profSelect.addEventListener('change', (e)=>{
       const prof = e.target.value;
       timeSelect.innerHTML = '';
@@ -757,13 +790,16 @@
         placeholder.setAttribute('data-i18n-option', 'optChoose');
         placeholder.textContent = translations[currentLang].optChoose || '-- Choisir --';
         timeSelect.appendChild(placeholder);
-        availability[prof].forEach(slot=>{ const opt = document.createElement('option'); opt.value = slot; opt.textContent = slot; timeSelect.appendChild(opt); });
+        availability[prof].forEach(slot=>{
+          const opt = document.createElement('option'); opt.value = slot; opt.textContent = slot; timeSelect.appendChild(opt);
+        });
       } else {
         const opt = document.createElement('option'); opt.disabled=true; opt.selected=true; opt.textContent = (currentLang === 'jp' ? '利用可能な時間がありません' : 'Pas de créneaux disponibles'); timeSelect.appendChild(opt);
       }
       rateDisplay.value = rates[prof] ? rates[prof] + ' €/h' : '—';
     });
 
+    // reset
     resetForm.addEventListener('click', ()=>{
       bookingForm.reset();
       timeSelect.innerHTML = '<option value="" selected disabled data-i18n-option="optChooseProfFirst">Choisir un professeur d\'abord</option>';
@@ -773,6 +809,7 @@
       translatePage(currentLang);
     });
 
+    // submit -> build mail (mail always in FRENCH)
     bookingForm.addEventListener('submit',(e)=>{
       e.preventDefault();
       const prof = profSelect.value;
@@ -817,6 +854,7 @@
 
       const body = lines.join('\n');
 
+      // Build outputs with separate copy buttons
       outputs.hidden = false;
       outputs.innerHTML = `
         <div><strong>Adresse mail:</strong> <span id="outEmail" class="muted">${MAIL_ADDRESS}</span>
@@ -838,22 +876,46 @@
         </div>
       `;
 
+      // Add listeners for the copy buttons (separate)
       const copyToClipboard = (text, cbMsg) => {
-        if(navigator.clipboard){ navigator.clipboard.writeText(text).then(()=>{ alert(cbMsg); }).catch(()=>{ fallbackCopy(text, cbMsg); }); }
-        else { fallbackCopy(text, cbMsg); }
+        if(navigator.clipboard){
+          navigator.clipboard.writeText(text).then(()=>{ alert(cbMsg); }).catch(()=>{ fallbackCopy(text, cbMsg); });
+        } else {
+          fallbackCopy(text, cbMsg);
+        }
       };
       const fallbackCopy = (text, cbMsg) => {
-        const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px'; document.body.appendChild(ta);
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
         ta.select();
         try{ document.execCommand('copy'); alert(cbMsg); }catch(e){ alert(cbMsg); }
         ta.remove();
       };
 
-      document.getElementById('copyEmailBtn').addEventListener('click', ()=>{ copyToClipboard(MAIL_ADDRESS, currentLang === 'jp' ? 'メールアドレスをコピーしました' : 'Adresse copiée'); });
-      document.getElementById('copySubjectBtn').addEventListener('click', ()=>{ copyToClipboard(subject, currentLang === 'jp' ? '件名をコピーしました' : 'Sujet copié'); });
-      document.getElementById('copyBodyBtn').addEventListener('click', ()=>{ copyToClipboard(body, currentLang === 'jp' ? 'メール本文をコピーしました' : 'Contenu copié'); });
-      document.getElementById('copyAllBtn').addEventListener('click', ()=>{ copyToClipboard(`${subject}\n\n${body}`, currentLang === 'jp' ? '件名と本文をコピーしました' : 'Sujet et contenu copiés'); });
-      document.getElementById('sendMailBtn').addEventListener('click', ()=>{ const mailto = `mailto:${encodeURIComponent(MAIL_ADDRESS)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; window.location.href = mailto; });
+      document.getElementById('copyEmailBtn').addEventListener('click', ()=>{
+        const text = MAIL_ADDRESS;
+        copyToClipboard(text, currentLang === 'jp' ? 'メールアドレスをコピーしました' : 'Adresse copiée');
+      });
+      document.getElementById('copySubjectBtn').addEventListener('click', ()=>{
+        const text = subject;
+        copyToClipboard(text, currentLang === 'jp' ? '件名をコピーしました' : 'Sujet copié');
+      });
+      document.getElementById('copyBodyBtn').addEventListener('click', ()=>{
+        const text = body;
+        copyToClipboard(text, currentLang === 'jp' ? 'メール本文をコピーしました' : 'Contenu copié');
+      });
+      document.getElementById('copyAllBtn').addEventListener('click', ()=>{
+        const text = `${subject}\n\n${body}`;
+        copyToClipboard(text, currentLang === 'jp' ? '件名と本文をコピーしました' : 'Sujet et contenu copiés');
+      });
+
+      document.getElementById('sendMailBtn').addEventListener('click', ()=>{
+        const mailto = `mailto:${encodeURIComponent(MAIL_ADDRESS)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailto;
+      });
 
       try{ localStorage.setItem('last_prof', prof); }catch(e){}
       outputs.scrollIntoView({behavior:'smooth'});
@@ -861,25 +923,37 @@
 
     function escapeHtml(str){ return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
+    // restore last selection visual pill
     try{
       const last = localStorage.getItem('last_prof');
       if(last){ document.querySelectorAll('[data-action="book"]').forEach(b=>{ if(b.getAttribute('data-prof')===last) b.classList.add('pill'); }) }
     }catch(e){}
 
+    // close modal on Escape
     document.addEventListener('keydown',(e)=>{ if(e.key==='Escape' && modal.classList.contains('show')) closeModalFn(); });
 
-    document.querySelectorAll('select').forEach(s => { s.addEventListener('focus', () => s.classList.add('custom-arrow')); s.addEventListener('blur', () => s.classList.remove('custom-arrow')); });
+    // small fallback: select focus class behavior
+    document.querySelectorAll('select').forEach(s => {
+      s.addEventListener('focus', () => s.classList.add('custom-arrow'));
+      s.addEventListener('blur', () => s.classList.remove('custom-arrow'));
+    });
 
+    // auto-resize textarea
     (function(){
       const ta = document.getElementById('extra');
       if(!ta) return;
       const MAX_H = 520;
-      function autosize(el){ el.style.height = 'auto'; const next = Math.min(el.scrollHeight, MAX_H); el.style.height = next + 'px'; }
+      function autosize(el){
+        el.style.height = 'auto';
+        const next = Math.min(el.scrollHeight, MAX_H);
+        el.style.height = next + 'px';
+      }
       autosize(ta);
       ta.addEventListener('input', (e)=> autosize(e.target));
       ta.addEventListener('focus', ()=> autosize(ta));
     })();
 
+    // 3D tilt for cards
     (function(){
       const cards = document.querySelectorAll('.card');
       const supportsDeviceOrientation = 'ondeviceorientation' in window;
@@ -911,6 +985,7 @@
       }
     })();
 
+    // reveal on scroll
     (function(){
       const io = new IntersectionObserver((entries, obs)=>{
         entries.forEach(entry=>{
@@ -920,6 +995,7 @@
       document.querySelectorAll('.reveal').forEach((el, i)=>{ el.style.transitionDelay = (i*80)+'ms'; io.observe(el); });
     })();
 
+    // attach ripples for dynamic outputs
     const mutObserver = new MutationObserver((mutations)=>{
       mutations.forEach(m=>{
         m.addedNodes && m.addedNodes.forEach(node=>{
@@ -929,10 +1005,16 @@
     });
     mutObserver.observe(document.body, {childList:true, subtree:true});
 
-    langToggle.addEventListener('click', ()=>{ currentLang = currentLang === 'fr' ? 'jp' : 'fr'; translatePage(currentLang); });
+    // Language toggle
+    langToggle.addEventListener('click', ()=>{
+      currentLang = currentLang === 'fr' ? 'jp' : 'fr';
+      translatePage(currentLang);
+    });
 
+    // initialize UI language
     translatePage(currentLang);
 
+    // reservation buttons: burstParticles + open modal
     document.querySelectorAll('[data-action="book"]').forEach(btn=>{
       btn.addEventListener('click', e=>{
         const prof = e.currentTarget.getAttribute('data-prof');
@@ -940,11 +1022,51 @@
         setTimeout(()=> openModal(prof), 160);
       });
     });
+    // header/cta reserve buttons
     if(openForm) openForm.addEventListener('click', ()=>{ burstParticles(openForm); setTimeout(()=> openModal(), 140); });
     if(openForm2) openForm2.addEventListener('click', ()=>{ burstParticles(openForm2); setTimeout(()=> openModal(), 140); });
 
+    // close modal
     if(closeModal) closeModal.addEventListener('click', closeModalFn);
     modal.addEventListener('click', (e)=> { if(e.target === modal) closeModalFn(); });
+
+    // ---------- Touch locking: prevent body scroll while allowing modal-body scroll ----------
+    // We add a touchmove listener that prevents default outside modal-body.
+    let _touchLockHandler = null;
+    function enableModalTouchLock(){
+      // ensure we only add once
+      if(_touchLockHandler) return;
+      _touchLockHandler = function(e){
+        // if modal not shown: allow default
+        if(!modal.classList.contains('show')) return;
+        // if the touch is inside modal-body, allow it (do nothing)
+        const target = e.target;
+        if(target && (target.closest && target.closest('.modal-body'))) {
+          // allow scrolling inside modal-body
+          return;
+        }
+        // otherwise prevent default and stop page from moving
+        e.preventDefault();
+      };
+      document.addEventListener('touchmove', _touchLockHandler, {passive:false});
+      // also block wheel to prevent desktop wheel scrolling of background when modal open
+      document.addEventListener('wheel', wheelBlock, {passive:false});
+    }
+    function disableModalTouchLock(){
+      if(!_touchLockHandler) return;
+      document.removeEventListener('touchmove', _touchLockHandler, {passive:false});
+      _touchLockHandler = null;
+      document.removeEventListener('wheel', wheelBlock, {passive:false});
+    }
+    function wheelBlock(e){
+      if(modal.classList.contains('show')){
+        // if wheel event target is inside modal-body, allow it, else prevent
+        if(e.target && e.target.closest && e.target.closest('.modal-body')) return;
+        e.preventDefault();
+      }
+    }
+    // Ensure disabling cleanup on page unload
+    window.addEventListener('beforeunload', ()=> disableModalTouchLock());
 
   </script>
 </body>
