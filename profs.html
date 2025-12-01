@@ -472,6 +472,16 @@
                   <input id="phone" type="tel" inputmode="tel" placeholder="06XXXXXXXX" required>
                 </div>
 
+                <!-- NEW: Address and Postal Code -->
+                <div>
+                  <label for="address" data-i18n="labelAddress">Adresse du domicile *</label>
+                  <input id="address" data-i18n-placeholder="placeholderAddress" placeholder="Ex : 12 avenue des Champs-Élysées, 75008 Paris" required>
+                </div>
+                <div>
+                  <label for="postal" data-i18n="labelPostal">Code postal *</label>
+                  <input id="postal" data-i18n-placeholder="placeholderPostal" placeholder="75000" required>
+                </div>
+
                 <div style="grid-column:1 / -1">
                   <label for="extra" data-i18n="labelExtra">Message — informations complémentaires (optionnel)</label>
                   <textarea id="extra" data-i18n-placeholder="placeholderExtra" placeholder="Ex : objectifs, difficultés, matériel disponible..."></textarea>
@@ -568,6 +578,10 @@
         labelRepFirst: 'Prénom du représentant *',
         labelEmail: 'E-mail *',
         labelPhone: 'Téléphone *',
+        labelAddress: 'Adresse du domicile *',
+        placeholderAddress: 'Ex : 12 avenue des Champs-Élysées, 75008 Paris',
+        labelPostal: 'Code postal *',
+        placeholderPostal: '75000',
         labelExtra: 'Message — informations complémentaires (optionnel)',
         placeholderExtra: 'Ex : objectifs, difficultés, matériel disponible...',
         reset: 'Réinitialiser',
@@ -620,6 +634,10 @@
         labelRepFirst: '保護者の名 *',
         labelEmail: 'Eメール *',
         labelPhone: '電話番号 *',
+        labelAddress: '自宅住所 *',
+        placeholderAddress: '例：東京都渋谷区1-2-3',
+        labelPostal: '郵便番号 *',
+        placeholderPostal: '150-0000',
         labelExtra: 'メッセージ — 補足情報（任意）',
         placeholderExtra: '例：目標、困っている点、利用可能な教材...',
         reset: 'リセット',
@@ -789,9 +807,11 @@
       const repFirst = document.getElementById('repFirst').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const postal = document.getElementById('postal').value.trim();
       const extra = document.getElementById('extra').value.trim();
 
-      if(!prof || !time || !childLast || !childFirst || !childAge || !childClass || !repLast || !repFirst || !email || !phone){
+      if(!prof || !time || !childLast || !childFirst || !childAge || !childClass || !repLast || !repFirst || !email || !phone || !address || !postal){
         alert(currentLang === 'jp' ? '必須項目をすべて入力してください。' : 'Veuillez remplir tous les champs obligatoires.');
         return;
       }
@@ -810,6 +830,8 @@
       lines.push(`Nom et prénom (représentant): ${repLast} ${repFirst}`);
       lines.push(`E-mail: ${email}`);
       lines.push(`Téléphone: ${phone}`);
+      lines.push(`Adresse du domicile: ${address}`);
+      lines.push(`Code postal: ${postal}`);
       lines.push(`Tarif horaire: ${hourlyRate} €/h`);
       lines.push(`Prix total (estimé): ${total} €`);
       if(extra) { lines.push(''); lines.push('Infos complémentaires:'); lines.push(extra); }
