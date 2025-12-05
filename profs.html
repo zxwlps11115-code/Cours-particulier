@@ -59,7 +59,7 @@
     .reserve-btn .icon{display:inline-block;width:18px;height:18px;flex:0 0 18px;transform-origin:center;transition:transform .36s cubic-bezier(.2,.9,.2,1)}
     .reserve-btn:hover .icon{transform:translateY(-3px) rotate(-8deg) scale(1.06)}
 
-    .burst-particle{position:absolute;width:8px;height:8px;border-radius:8px;pointer-events:none;opacity:0;transform:scale(.4);will-change:transform,opacity,left,top;background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.85));box-shadow:0 6px 18px rgba(0,0,0,0.4)}
+    .burst-particle{position:absolute;width:8px;height:8px;border-radius:8px;pointer-events:none;opacity:0;transform:scale(.4);will-change:transform,opacity,left,top;background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.85));box-shadow:0 6px 18px rgba(0,0,0,0.4) }
 
     .hero{display:grid;grid-template-columns:1fr minmax(260px,420px);gap:30px;align-items:stretch;margin-bottom:34px}
     .hero-card{background:var(--card-grad);padding:32px;border-radius:22px;box-shadow:var(--shadow-strong);position:relative;overflow:visible}
@@ -67,7 +67,7 @@
     .hero h2{margin:0 0 8px 0;font-size:28px;letter-spacing:-0.3px}
     .hero p.lead{color:var(--muted);margin:0 0 18px}
 
-    .quick-features{display:flex;gap:10px;flex-wrap:wrap}
+    .quick-features{Display:flex;gap:10px;flex-wrap:wrap}
     .feature{background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));padding:10px 12px;border-radius:12px;font-size:13px;color:var(--muted);backdrop-filter: blur(6px);border:1px solid rgba(255,255,255,0.02)}
 
     .cta{display:flex;align-items:center;gap:18px;padding:18px;border-radius:14px;background:linear-gradient(90deg, rgba(7,20,39,0.4) 0%, rgba(96,165,250,0.02) 100%);margin-top:18px;box-shadow:0 10px 40px rgba(2,6,23,0.5)}
@@ -388,6 +388,38 @@
             </div>
           </article>
 
+          <!-- New: Lyne -->
+          <article class="card reveal" data-name="Lyne" data-rate="20" tabindex="0">
+            <div class="shine"></div>
+            <div class="teacher-header">
+              <div class="avatar" aria-hidden="true">Ly</div>
+              <div class="teacher-meta">
+                <h3>Lyne <span class="badge">15 ans</span></h3>
+                <div class="meta-sub">Beaugrenelle</div>
+              </div>
+              <div style="text-align:right">
+                <div class="rate">20 €/h</div>
+                <div class="muted" style="font-size:13px" data-i18n="availabilityLyne">Mercredi après-midi</div>
+              </div>
+            </div>
+
+            <div class="subjects">
+              <span class="subject">Japonais</span>
+              <span class="subject">Anglais</span>
+              <span class="subject">Français</span>
+              <span class="subject">Musique</span>
+            </div>
+
+            <p class="muted" style="margin-top:10px" data-i18n="descLyne">Encourageante, attentionnée.</p>
+
+            <div class="card-footer">
+              <div class="muted" style="font-size:13px">Diplôme: DNBI</div>
+              <div>
+                <button class="btn reserve-btn" data-action="book" data-prof="Lyne" data-i18n="reserve"><span class="label">Réserver</span></button>
+              </div>
+            </div>
+          </article>
+
         </div>
       </section>
 
@@ -420,6 +452,7 @@
                       <option value="Akaru">Akaru — 20 €/h</option>
                       <option value="Tokuma">Tokuma — 20 €/h</option>
                       <option value="Leo">Leo — 20 €/h</option>
+                      <option value="Lyne">Lyne — 20 €/h</option>
                     </select>
                   </div>
 
@@ -524,9 +557,10 @@
     const availability = {
       'Akaru': ['Lundi 16:00-17:00','Mercredi 15:00-16:00','Samedi 10:00-11:00'],
       'Tokuma': ['Lundi 17:00','Mercredi 17:00','Vendredi 18:00','Samedi 17:00'],
-      'Leo': ['Vendredi 19:30','Samedi 9:00','Samedi 18:00','Dimanche 09:00']
+      'Leo': ['Vendredi 19:30','Samedi 9:00','Samedi 18:00','Dimanche 09:00'],
+      'Lyne': ['Mercredi 16:00'] // <-- ajouté : créneau mercredi 16:00-17:00
     };
-    const rates = { 'Akaru':20, 'Tokuma':20, 'Leo':20 };
+    const rates = { 'Akaru':20, 'Tokuma':20, 'Leo':20, 'Lyne':20 };
     const MAIL_ADDRESS = 'nihon_connect.paris@outlook.com';
 
     // ===== elements =====
@@ -558,7 +592,7 @@
         perSession: '(séance 1h)',
         ctaText: 'Réservez une séance d\'essai 100% gratuite!',
         ctaReserve: 'Réserver maintenant',
-        profList: 'Nos professeurs : Akaru, Tokuma, Leo. <strong>Tarif unique : 20 €/h  — uniquement en espece</strong>',
+        profList: 'Nos professeurs : Akaru, Tokuma, Leo, Lyne. <strong>Tarif unique : 20 €/h  — uniquement en espece</strong>',
         contactQuick: 'Contact rapide',
         contactLead: 'Demande rapide — réponse sous 24 h.',
         telLabel: 'Tél :',
@@ -569,9 +603,11 @@
         availabilityAkaru: "Après l'école, week-end",
         availabilityTokuma: 'Soirées, week-end',
         availabilityLeo: 'Vendredi soir, week-end',
+        availabilityLyne: 'Mercredi après-midi',
         descAkaru: 'Élève en section internationale — méthode adaptée et claire.',
         descTokuma: 'Approche structurée — excellent résultats.',
         descLeo: 'Bonne maîtrise du japonais. Approche pédagogique.',
+        descLyne: 'Polyvalante — Encourageante, attentionnée.',
         reserve: 'Réserver',
         takeCourse: 'Prendre des cours',
         modalTitle: 'Prendre un cours — demande',
@@ -614,7 +650,7 @@
         perSession: '（1時間）',
         ctaText: '初回無料 — 安心して始める0円体験。',
         ctaReserve: '今すぐ予約',
-        profList: '講師：Akaru、Tokuma、Leo。<strong>料金：20 €/h — 現金のみ</strong>',
+        profList: '講師：Akaru、Tokuma、Leo、Lyne。<strong>料金：20 €/h — 現金のみ</strong>',
         contactQuick: 'お問い合わせ',
         contactLead: 'お問い合わせは通常24時間以内に返信します。',
         telLabel: '電話：',
@@ -625,9 +661,11 @@
         availabilityAkaru: '放課後、週末',
         availabilityTokuma: '夜間、週末',
         availabilityLeo: '金曜夜、週末',
-        descAkaru: 'インターナショナルセクション在籍 — 体系的でわかりやすい指導。',
-        descTokuma: '構造化されたアプローチ — 優れた成果。',
+        availabilityLyne: '水曜の午後',
+        descAkaru: 'インターナショナルセクション在籍。体系的でわかりやすい指導。',
+        descTokuma: '構造化されたアプローチ。優れた成果。',
         descLeo: '日本語に堪能。親しみやすく教育的な指導。',
+        descLyne: '万能。励まし上手で、気配りがあります。',
         reserve: '予約する',
         takeCourse: 'レッスンを予約',
         modalTitle: 'レッスン予約 — 申込',
