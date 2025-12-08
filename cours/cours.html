@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title data-i18n="meta-title">フランス日本セクション向け 日本語学習プログラム</title>
+  <meta name="description" data-i18n="meta-desc" content="フランス日本セクション在籍生徒様向けの、日本語学習と選択科目サポートを併せ持つ総合プログラム。" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#f7fbff;
+      --bg-2:#ffffff;
+      --card:#ffffff;
+      --muted:#4b5563;
+      --text:#0f1724;
+      --accent:#0ea5a1;
+      --accent-2:#3b82f6;
+      --radius:12px;
+      --maxwidth:900px;
+      --gap:20px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg-1) 0%, #eef7fb 60%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.6;
+      padding-bottom:64px;
+      scroll-behavior: auto; /* we'll use custom JS animation */
+    }
+
+    .container{
+      width:clamp(320px,92%,var(--maxwidth));
+      margin:0 auto;padding:28px 18px;
+    }
+
+    header{
+      display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:56px;height:56px;border-radius:10px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:grid;place-items:center;color:white;font-weight:800;font-size:1.05rem;
+      box-shadow:0 8px 20px rgba(59,130,246,0.08);
+    }
+    .brand h1{margin:0;font-size:1.05rem}
+    .brand p{margin:0;font-size:0.85rem;color:var(--muted)}
+
+    nav{display:flex;gap:10px;align-items:center}
+    .nav-link{color:var(--muted);text-decoration:none;font-weight:600;padding:8px;border-radius:8px}
+    .nav-link:hover{color:var(--accent-2)}
+
+    /* Core layout: single column, spacious sections */
+    main{display:block;gap:28px}
+    section{margin-bottom:28px}
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:20px;
+      border:1px solid rgba(15,23,36,0.04);
+      box-shadow:0 8px 26px rgba(2,6,23,0.04);
+    }
+
+    /* HERO */
+    .hero{
+      display:grid;gap:12px;padding:22px;border-radius:16px;background:linear-gradient(180deg,#ffffff,#f3fbff);
+    }
+    .eyebrow{display:inline-block;background:rgba(14,165,161,0.08);padding:6px 10px;border-radius:999px;font-weight:700;color:var(--accent)}
+    .headline{font-size:1.6rem;margin:6px 0 0;color:var(--text)}
+    .sub{color:var(--muted);margin:4px 0 0}
+
+    .cta-row{display:flex;gap:12px;align-items:center;margin-top:12px}
+    .cta-primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;
+      box-shadow:0 8px 18px rgba(14,165,161,0.12);
+    }
+    .cta-secondary{background:transparent;border:1px solid rgba(15,23,36,0.06);padding:9px 12px;border-radius:10px;color:var(--text);text-decoration:none;font-weight:700}
+
+    /* Sections */
+    h2{margin:6px 0 12px;font-size:1.12rem}
+    h3{margin:8px 0;font-size:1rem}
+    p.lead{color:var(--muted);margin:0 0 12px}
+
+    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
+    @media (max-width:700px){ .features{grid-template-columns:1fr} }
+    .feature{
+      display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;border:1px solid rgba(15,23,36,0.03);
+      background:linear-gradient(180deg,#fff,#fbfeff);
+    }
+    .icon{
+      width:46px;height:46px;border-radius:10px;display:grid;place-items:center;background:white;color:var(--text);font-weight:700;
+      box-shadow:0 6px 14px rgba(2,6,23,0.03);
+      flex-shrink:0;
+    }
+    .feature h4{margin:0 0 4px}
+    .feature p{margin:0;color:var(--muted)}
+
+    .program-grid{display:grid;gap:12px}
+    .program-item{padding:14px;border-radius:10px;border:1px solid rgba(15,23,36,0.04);background:#fff}
+    .list{padding-left:18px;margin:0}
+    .list li{margin-bottom:8px;color:var(--muted)}
+
+    /* subtle separators */
+    .sep{height:1px;background:linear-gradient(90deg, transparent, rgba(15,23,36,0.04), transparent);margin:16px 0;border-radius:4px}
+
+    /* Contact */
+    .contact{
+      display:grid;gap:6px;
+    }
+    .contact .title{font-weight:700}
+    .contact .info{color:var(--muted);line-height:1.5}
+    .contact .email{font-weight:700;color:var(--text);word-break:break-all}
+
+    footer{
+      margin-top:28px;padding:18px 0;color:var(--muted);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+      border-top:1px solid rgba(15,23,36,0.04);
+    }
+
+    /* accessible focus */
+    a:focus{outline:3px solid rgba(59,130,246,0.16);outline-offset:3px;border-radius:6px}
+
+    /* language toggle */
+    .lang-switch { display:flex; gap:8px; align-items:center; }
+    .lang-btn {
+      background:transparent;border:1px solid rgba(15,23,36,0.06);padding:6px 8px;border-radius:8px;font-weight:700;cursor:pointer;
+    }
+    .lang-btn[aria-pressed="true"] { background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; border-color: transparent; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand" aria-hidden="false">
+        <div style="background-image: url(nihon_connect.jpeg); background-size: 100%;" class="logo" aria-hidden="true"></div>
+        <div>
+          <h1 data-i18n="brand-title">Nihon Connect</h1>
+          <p data-i18n="brand-sub">フランス日本セクション サポート</p>
+        </div>
+      </div>
+
+      <nav aria-label="ページ内リンク">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <a class="nav-link" href="#about" data-i18n="nav-about">私たちの強み</a>
+          <a class="nav-link" href="#programs" data-i18n="nav-programs">プログラム</a>
+          <a class="nav-link" href="#future" data-i18n="nav-future">将来設計</a>
+          <a class="nav-link" href="#contact" data-i18n="nav-contact">お問い合わせ</a>
+        </div>
+
+        <!-- language switch -->
+        <div class="lang-switch" aria-hidden="false" style="margin-left:12px;">
+          <button class="lang-btn" id="btn-jp" data-lang="ja" aria-pressed="true">JP</button>
+          <button class="lang-btn" id="btn-fr" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero card" aria-labelledby="hero-title">
+        <div>
+          <span class="eyebrow" data-i18n="eyebrow">フランス日本セクション在籍生徒様向け</span>
+          <h1 id="hero-title" class="headline" data-i18n="headline">日本語で学ぶ。理解が変わる — 学力と自信を育てる</h1>
+          <p class="sub" data-i18n="sub">選択科目（算数・フランス語・英語・音楽）を日本語で丁寧に解説。宿題サポート・テスト対策・将来設計まで、二本柱で支えます。</p>
+        </div>
+
+        <div class="cta-row" aria-hidden="false">
+          <a class="cta-primary" href="#programs" data-scroll data-i18n="cta-programs">プログラムを見る</a>
+          <a class="cta-secondary" href="#about" data-scroll data-i18n="cta-about">私たちの強みへ</a>
+        </div>
+      </section>
+
+      <!-- About / Strengths -->
+      <section id="about" class="card" aria-labelledby="about-title">
+        <h2 id="about-title" data-i18n="about-title">🎓 私たちの強み</h2>
+        <p class="lead" data-i18n="about-lead">選択科目がフランス語で教えられる環境にあるお子様向けに、日本語で「概念」を再構築することで理解を確実にします。学術用語や複雑な概念も母語で丁寧に説明します。</p>
+
+        <div class="features" role="list">
+          <div class="feature" role="listitem">
+            <div class="icon" aria-hidden="true">🧠</div>
+            <div>
+              <h4 data-i18n="f1-title">母語での概念定着</h4>
+              <p data-i18n="f1-desc">学術用語や概念を日本語でわかりやすく整理し、長期記憶へ結びつけます。</p>
+            </div>
+          </div>
+
+          <div class="feature" role="listitem">
+            <div class="icon" aria-hidden="true">🧩</div>
+            <div>
+              <h4 data-i18n="f2-title">個別最適化</h4>
+              <p data-i18n="f2-desc">学力診断に基づく個別カリキュラムで効率よく弱点を克服します。</p>
+            </div>
+          </div>
+
+          <div class="feature" role="listitem">
+            <div class="icon" aria-hidden="true">🎯</div>
+            <div>
+              <h4 data-i18n="f3-title">目標志向の授業</h4>
+              <p data-i18n="f3-desc">短期的なテスト対策から長期的な学習計画まで、目的に合わせて設計します。</p>
+            </div>
+          </div>
+
+          <div class="feature" role="listitem">
+            <div class="icon" aria-hidden="true">🎌</div>
+            <div>
+              <h4 data-i18n="f4-title">文化を込めた教材</h4>
+              <p data-i18n="f4-desc">漫画・アニメ等、興味を引く教材で「生きた日本語」を楽しみながら習得します。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="sep" aria-hidden="true"></div>
+
+      <!-- Programs -->
+      <section id="programs" class="card" aria-labelledby="programs-title">
+        <h2 id="programs-title" data-i18n="programs-title">📖 プログラム説明（詳細）</h2>
+        <p class="lead" data-i18n="programs-lead">以下は提供する二本柱のプログラム詳細です。</p>
+
+        <div class="program-grid" style="margin-top:12px;">
+          <!-- Program 1 -->
+          <article class="program-item" aria-labelledby="p1-title">
+            <h3 id="p1-title" data-i18n="p1-title">プログラム1: 日本語学習サポート</h3>
+            <p class="muted" data-i18n="p1-sub">宿題・テスト対策から、総合的な日本語力向上、モチベーション維持プログラムまで。</p>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p1-a-title">宿題・テスト対策</h4>
+              <ul class="list">
+                <li data-i18n="p1-a-1"><strong>テスト予習指導</strong> - 効果的な予習法を指導</li>
+                <li data-i18n="p1-a-2"><strong>漢字テスト対策</strong> - 意味と例文を結びつける定着する学習法で確実にマスター</li>
+                <li data-i18n="p1-a-3"><strong>読解力強化</strong> - 段階的に文章理解力を伸ばす</li>
+              </ul>
+            </div>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p1-b-title">総合的な日本語力向上</h4>
+              <ul class="list">
+                <li data-i18n="p1-b-1"><strong>語彙力強化プログラム</strong> - 実用語彙、漫画／本を教材に実践的読解</li>
+                <li data-i18n="p1-b-2"><strong>弱点克服カリキュラム</strong> - 個別分析に基づく改善プラン</li>
+              </ul>
+            </div>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p1-c-title">モチベーション維持</h4>
+              <ul class="list">
+                <li data-i18n="p1-c-1">漢字かるた・学習ゲームで楽しく継続</li>
+                <li data-i18n="p1-c-2">漫画・アニメを活用した興味ベースの教材選定</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Program 2 -->
+          <article class="program-item" aria-labelledby="p2-title">
+            <h3 id="p2-title" data-i18n="p2-title">プログラム2: 選択科目サポート</h3>
+            <p class="muted" data-i18n="p2-sub">フランス語で教えられる科目を日本語で再解説し、理解を深めます。</p>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p2-a-title">対応科目</h4>
+              <ul class="list">
+                <li data-i18n="p2-a-1"><strong>算数</strong> - 計算・文章題を日本語で丁寧に解説</li>
+                <li data-i18n="p2-a-2"><strong>フランス語</strong> - 文法や表現を日本語で整理</li>
+                <li data-i18n="p2-a-3"><strong>英語</strong> - 文法・語彙を日本語で理解</li>
+                <li data-i18n="p2-a-4"><strong>音楽</strong> - 音楽理論や楽曲分析を日本語でサポート</li>
+              </ul>
+            </div>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p2-b-title">学習サポート内容</h4>
+              <ul class="list">
+                <li data-i18n="p2-b-1">宿題支援（フランス語の指示を日本語で解説）</li>
+                <li data-i18n="p2-b-2">テスト予習（範囲を日本語で事前学習）</li>
+                <li data-i18n="p2-b-3">学術用語の理解（専門用語を日本語で分かりやすく）</li>
+                <li data-i18n="p2-b-4">概念の定着（日本語説明で深い理解を実現）</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="sep" aria-hidden="true"></div>
+
+      <!-- Future planning -->
+      <section id="future" class="card" aria-labelledby="future-title">
+        <h2 id="future-title" data-i18n="future-title">🌟 将来設計サポート</h2>
+        <p class="lead" data-i18n="future-lead">日本語力とバイリンガルという強みを活かした将来設計を、一緒に描きます。</p>
+        <ul class="list" style="margin-top:8px">
+          <li data-i18n="future-1">日本語学習の目標設定と達成プラン</li>
+          <li data-i18n="future-2">バイリンガルとしての強みを活かすキャリアプランニング</li>
+          <li data-i18n="future-3">保護者との面談で長期ビジョンを共有</li>
+        </ul>
+      </section>
+
+      <div class="sep" aria-hidden="true"></div>
+
+      <!-- Contact moved to bottom of content (minimal: only email + hours) -->
+      <section id="contact" class="card" aria-labelledby="contact-title">
+        <h2 id="contact-title" data-i18n="contact-title">お問い合わせ</h2>
+        <div class="contact">
+          <div class="title" data-i18n="contact-email-label">メール</div>
+          <div class="info">
+            <div class="email">nihon_connect.paris@outlook.com</div>
+            <div style="margin-top:6px;color:var(--muted)" data-i18n="contact-hours">対応時間: 平日 9:00〜18:00（中央ヨーロッパ時間）</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <strong>Nihon Connect</strong>
+        <div style="color:var(--muted)" data-i18n="footer-tag">日本語で学ぶ、未来をつくる。</div>
+      </div>
+
+      <div style="color:var(--muted)">© <span id="year"></span></div>
+    </footer>
+  </div>
+
+  <script>
+    // ---- translations object (JP / FR) ----
+    const translations = {
+      ja: {
+        "meta-title": "フランス日本セクション向け 日本語学習プログラム",
+        "meta-desc": "フランス日本セクション在籍生徒様向けの、日本語学習と選択科目サポートを併せ持つ総合プログラム。",
+        "brand-title": "Nihon Connect",
+        "brand-sub": "フランス日本セクション サポート",
+        "nav-about": "私たちの強み",
+        "nav-programs": "プログラム",
+        "nav-future": "将来設計",
+        "nav-contact": "お問い合わせ",
+        "eyebrow": "フランス日本セクション在籍生徒様向け",
+        "headline": "日本語で学ぶ。理解が変わる — 学力と自信を育てる",
+        "sub": "選択科目（算数・フランス語・英語・音楽）を日本語で丁寧に解説。宿題サポート・テスト対策・将来設計まで、二本柱で支えます。",
+        "cta-programs": "プログラムを見る",
+        "cta-about": "私たちの強みへ",
+        "about-title": "🎓 私たちの強み",
+        "about-lead": "選択科目がフランス語で教えられる環境にあるお子様向けに、日本語で「概念」を再構築することで理解を確実にします。学術用語や複雑な概念も母語で丁寧に説明します。",
+        "f1-title": "母語での概念定着",
+        "f1-desc": "学術用語や概念を日本語でわかりやすく整理し、長期記憶へ結びつけます。",
+        "f2-title": "個別最適化",
+        "f2-desc": "学力診断に基づく個別カリキュラムで効率よく弱点を克服します。",
+        "f3-title": "目標志向の授業",
+        "f3-desc": "短期的なテスト対策から長期的な学習計画まで、目的に合わせて設計します。",
+        "f4-title": "文化を込めた教材",
+        "f4-desc": "漫画・アニメ等、興味を引く教材で「生きた日本語」を楽しみながら習得します。",
+        "programs-title": "📖 プログラム説明（詳細）",
+        "programs-lead": "以下は提供する二本柱のプログラム詳細です。",
+        "p1-title": "プログラム1: 日本語学習サポート",
+        "p1-sub": "宿題・テスト対策から、総合的な日本語力向上、モチベーション維持プログラムまで。",
+        "p1-a-title": "宿題・テスト対策",
+        "p1-a-1": "<strong>テスト予習指導</strong> - 効果的な予習法を指導",
+        "p1-a-2": "<strong>漢字テスト対策</strong> - 意味と例文を結びつける定着する学習法で確実にマスター",
+        "p1-a-3": "<strong>読解力強化</strong> - 段階的に文章理解力を伸ばす",
+        "p1-b-title": "総合的な日本語力向上",
+        "p1-b-1": "<strong>語彙力強化プログラム</strong> - 実用語彙、漫画／本を教材に実践的読解",
+        "p1-b-2": "<strong>弱点克服カリキュラム</strong> - 個別分析に基づく改善プラン",
+        "p1-c-title": "モチベーション維持",
+        "p1-c-1": "漢字かるた・学習ゲームで楽しく継続",
+        "p1-c-2": "漫画・アニメを活用した興味ベースの教材選定",
+        "p2-title": "プログラム2: 選択科目サポート",
+        "p2-sub": "フランス語で教えられる科目を日本語で再解説し、理解を深めます。",
+        "p2-a-title": "対応科目",
+        "p2-a-1": "<strong>算数</strong> - 計算・文章題を日本語で丁寧に解説",
+        "p2-a-2": "<strong>フランス語</strong> - 文法や表現を日本語で整理",
+        "p2-a-3": "<strong>英語</strong> - 文法・語彙を日本語で理解",
+        "p2-a-4": "<strong>音楽</strong> - 音楽理論や楽曲分析を日本語でサポート",
+        "p2-b-title": "学習サポート内容",
+        "p2-b-1": "宿題支援（フランス語の指示を日本語で解説）",
+        "p2-b-2": "テスト予習（範囲を日本語で事前学習）",
+        "p2-b-3": "学術用語の理解（専門用語を日本語で分かりやすく）",
+        "p2-b-4": "概念の定着（日本語説明で深い理解を実現）",
+        "future-title": "🌟 将来設計サポート",
+        "future-lead": "日本語力とバイリンガルという強みを活かした将来設計を、一緒に描きます。",
+        "future-1": "日本語学習の目標設定と達成プラン",
+        "future-2": "バイリンガルとしての強みを活かすキャリアプランニング",
+        "future-3": "保護者との面談で長期ビジョンを共有",
+        "contact-title": "お問い合わせ",
+        "contact-email-label": "メール",
+        "contact-hours": "対応時間: 平日 9:00〜18:00（中央ヨーロッパ時間）",
+        "footer-tag": "日本語で学ぶ、未来をつくる。"
+      },
+      fr: {
+        "meta-title": "Programme d'apprentissage en japonais — Sections franco-japonaises",
+        "meta-desc": "Programme complet pour élèves en section japonaise en France : soutien en japonais et accompagnement des matières optionnelles.",
+        "brand-title": "Nihon Connect",
+        "brand-sub": "Soutien pour sections franco-japonaises",
+        "nav-about": "Nos atouts",
+        "nav-programs": "Programmes",
+        "nav-future": "Avenir",
+        "nav-contact": "Contact",
+        "eyebrow": "Pour les élèves en section japonaise en France",
+        "headline": "Apprendre en japonais. Transformer la compréhension — Renforcer compétences et confiance",
+        "sub": "Cours optionnels (maths, français, anglais, musique) expliqués en japonais. Aide aux devoirs, préparation aux contrôles et accompagnement pour l'avenir.",
+        "cta-programs": "Voir les programmes",
+        "cta-about": "Voir nos atouts",
+        "about-title": "🎓 Nos atouts",
+        "about-lead": "Pour les enfants dont les matières sont enseignées en français, nous reconstruisons les «concepts» en japonais afin d'assurer une compréhension solide. Nous expliquons soigneusement les termes académiques et les notions complexes en japonais.",
+        "f1-title": "Ancrage des concepts en langue maternelle",
+        "f1-desc": "Organisation claire des termes et concepts en japonais pour favoriser la mémoire à long terme.",
+        "f2-title": "Personnalisation",
+        "f2-desc": "Programmes individualisés basés sur un diagnostic pour corriger efficacement les faiblesses.",
+        "f3-title": "Cours orientés objectifs",
+        "f3-desc": "Conception adaptée aux besoins : préparation aux contrôles comme plan d'apprentissage long terme.",
+        "f4-title": "Matériel culturel",
+        "f4-desc": "Utilisation de mangas, anime et contenus attractifs pour apprendre le japonais vivant.",
+        "programs-title": "📖 Détails des programmes",
+        "programs-lead": "Voici les détails des deux piliers du programme.",
+        "p1-title": "Programme 1 : Soutien en japonais",
+        "p1-sub": "Aide aux devoirs, préparation aux contrôles, renforcement global des compétences en japonais et maintien de la motivation.",
+        "p1-a-title": "Aide aux devoirs & préparation",
+        "p1-a-1": "<strong>Préparation aux contrôles</strong> - Méthodes de révision efficaces",
+        "p1-a-2": "<strong>Préparation kanji</strong> - Méthodes d'ancrage par sens et exemples",
+        "p1-a-3": "<strong>Renforcement de la compréhension</strong> - Progression par paliers pour améliorer la compréhension écrite",
+        "p1-b-title": "Renforcement global du japonais",
+        "p1-b-1": "<strong>Programme de vocabulaire</strong> - Lecture pratique via mangas/livres",
+        "p1-b-2": "<strong>Plan de correction</strong> - Plan d'amélioration personnalisé",
+        "p1-c-title": "Maintien de la motivation",
+        "p1-c-1": "Jeux d'apprentissage (karuta kanji) pour continuer en s'amusant",
+        "p1-c-2": "Sélection de supports basée sur les intérêts (manga, anime)",
+        "p2-title": "Programme 2 : Soutien pour matières optionnelles",
+        "p2-sub": "Réexpliquons en japonais les matières enseignées en français pour renforcer la compréhension.",
+        "p2-a-title": "Matières prises en charge",
+        "p2-a-1": "<strong>Maths</strong> - Explications claires des calculs et problèmes en japonais",
+        "p2-a-2": "<strong>Français</strong> - Grammaire et expressions expliquées en japonais",
+        "p2-a-3": "<strong>Anglais</strong> - Grammaire et vocabulaire expliqués en japonais",
+        "p2-a-4": "<strong>Musique</strong> - Théorie et analyse en japonais",
+        "p2-b-title": "Contenu du soutien",
+        "p2-b-1": "Aide aux devoirs (consignes en français expliquées en japonais)",
+        "p2-b-2": "Préparation aux contrôles (révisions en japonais)",
+        "p2-b-3": "Compréhension des termes académiques (explications simplifiées)",
+        "p2-b-4": "Ancrage des concepts via explications en japonais",
+        "future-title": "🌟 Accompagnement pour l'avenir",
+        "future-lead": "Construisons ensemble un projet d'avenir tirant parti du bilinguisme et du niveau en japonais.",
+        "future-1": "Objectifs d'apprentissage et plan d'atteinte",
+        "future-2": "Plan de carrière valorisant le bilinguisme",
+        "future-3": "Entretien avec les parents pour partager la vision long terme",
+        "contact-title": "Contact",
+        "contact-email-label": "Email",
+        "contact-hours": "Horaires : Lun–Ven 9:00–18:00 (CET)",
+        "footer-tag": "Apprendre en japonais, construire l'avenir."
+      }
+    };
+
+    // ---- utility: apply translations ----
+    function applyTranslations(lang) {
+      // update html lang attribute
+      document.documentElement.lang = lang;
+
+      // update meta title & desc if present
+      const metaTitleEl = document.querySelector('title[data-i18n], title');
+      if (metaTitleEl) metaTitleEl.textContent = translations[lang]['meta-title'] || metaTitleEl.textContent;
+      const metaDesc = document.querySelector('meta[name="description"][data-i18n], meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', translations[lang]['meta-desc'] || metaDesc.getAttribute('content'));
+
+      // replace all elements that have data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        const text = translations[lang] && translations[lang][key];
+        if (typeof text === 'string') {
+          // allow HTML in translations for list items that contain <strong>
+          el.innerHTML = text;
+        }
+      });
+
+      // update language switch aria-pressed
+      document.querySelectorAll('.lang-btn').forEach(btn=>{
+        const is = btn.dataset.lang === lang;
+        btn.setAttribute('aria-pressed', is ? 'true' : 'false');
+      });
+    }
+
+    // ---- language toggle setup ----
+    (function(){
+      const saved = localStorage.getItem('site-lang');
+      const defaultLang = saved || 'ja';
+      // apply initial translations
+      applyTranslations(defaultLang);
+
+      // set up buttons
+      document.querySelectorAll('.lang-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const lang = btn.dataset.lang;
+          if (!lang) return;
+          localStorage.setItem('site-lang', lang);
+          applyTranslations(lang);
+        });
+      });
+    })();
+
+    // fill year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll animation for in-page anchors with custom easing and duration
+    (function(){
+      // Easing: easeInOutCubic
+      function easeInOutCubic(t){
+        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+      }
+
+      function animateScrollTo(targetY, duration){
+        const startY = window.pageYOffset;
+        const diff = targetY - startY;
+        const startTime = performance.now();
+        if (Math.abs(diff) < 2) return; // already there
+
+        return new Promise(resolve => {
+          function tick(now) {
+            const elapsed = now - startTime;
+            const t = Math.min(1, elapsed / duration);
+            const eased = easeInOutCubic(t);
+            window.scrollTo(0, Math.round(startY + diff * eased));
+            if (t < 1) {
+              requestAnimationFrame(tick);
+            } else {
+              resolve();
+            }
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+
+      // Attach to any link with hash that points to an element on the page
+      document.addEventListener('click', function(e){
+        const el = e.target.closest('a[href^="#"]');
+        if (!el) return;
+        const hash = el.getAttribute('href');
+        if (!hash || hash === '#') return;
+
+        const target = document.querySelector(hash);
+        if (!target) return;
+
+        e.preventDefault();
+
+        // Calculate target top offset (account for any fixed header if added later)
+        const rect = target.getBoundingClientRect();
+        const targetTop = window.pageYOffset + rect.top - 20; // small offset for breathing room
+
+        // Duration based on distance (min 400ms, max 1000ms)
+        const distance = Math.abs(window.pageYOffset - targetTop);
+        const duration = Math.max(400, Math.min(1000, Math.round(distance / 1.5)));
+
+        animateScrollTo(targetTop, duration).then(() => {
+          // update focus for accessibility
+          try {
+            target.setAttribute('tabindex', '-1');
+            target.focus({preventScroll:true});
+          } catch (err){}
+          // update URL hash without jumping
+          history.replaceState(null, '', hash);
+        });
+      }, {passive:false});
+
+    })();
+
+    // subtle reveal on scroll for polish
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.style.opacity = 1;
+          e.target.style.transform = 'none';
+        }
+      });
+    }, {threshold:0.12});
+
+    document.querySelectorAll('.card').forEach(el=>{
+      el.style.opacity = 0;
+      el.style.transform = 'translateY(10px)';
+      el.style.transition = 'opacity .6s ease, transform .6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
