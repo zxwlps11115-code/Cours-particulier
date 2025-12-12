@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title data-i18n="meta-title">フランス日本セクション向け 日本語学習プログラム</title>
+  <meta name="description" data-i18n="meta-desc" content="フランス日本セクション在籍生徒様向けの、日本語学習と選択科目サポートを併せ持つ総合プログラム。" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#f7fbff;
+      --bg-2:#ffffff;
+      --card:#ffffff;
+      --muted:#4b5563;
+      --text:#0f1724;
+      --accent:#0ea5a1;
+      --accent-2:#3b82f6;
+      --radius:12px;
+      --maxwidth:1100px;
+      --gap:20px;
+      --header-height:72px;
+      --mobile-hit:48px;
+      --mobile-nav-width:min(92vw,420px);
+      --safe-top: env(safe-area-inset-top, 0px);
+    }
+
+    /* Reset & base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg-1) 0%, #eef7fb 60%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.6;
+      padding-bottom:64px;
+      scroll-behavior: auto;
+      font-size:16px;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+
+    /* Container */
+    .container{
+      width:clamp(320px,92%,var(--maxwidth));
+      margin:0 auto;
+      padding:18px;
+      max-width:var(--maxwidth);
+    }
+
+    /* Header */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 0;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:10px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:grid;place-items:center;color:white;font-weight:800;font-size:1.05rem;
+      box-shadow:0 8px 20px rgba(59,130,246,0.08);
+      flex-shrink:0;
+      background-size:cover;
+      background-position:center;
+    }
+    .brand h1{margin:0;font-size:clamp(1rem,2.2vw,1.15rem)}
+    .brand p{margin:0;font-size:0.85rem;color:var(--muted)}
+
+    /* Nav wrapper */
+    .nav-wrap{display:flex;align-items:center;gap:12px}
+
+/* --- IMPORTANT: hide inline nav and language buttons from the header everywhere --- */
+    nav.primary { display:none !important; }
+    .lang-switch { display:none !important; }
+
+    /* Hamburger visible everywhere (desktop + mobile) */
+    .hamburger {
+      display:inline-grid;
+      place-items:center;
+      width:var(--mobile-hit);height:var(--mobile-hit);border-radius:10px;border:1px solid rgba(15,23,36,0.06);
+      background:transparent;cursor:pointer;
+    }
+    .hamburger:focus{outline:3px solid rgba(59,130,246,0.16);outline-offset:2px}
+    .hamburger .bar{width:20px;height:2px;background:var(--text);display:block;border-radius:2px;position:relative}
+    .hamburger .bar::after,.hamburger .bar::before{content:"";position:absolute;left:0;right:0;height:2px;background:var(--text);border-radius:2px}
+    .hamburger .bar::before{top:-6px}
+    .hamburger .bar::after{bottom:-6px}
+
+    /* Mobile nav panel + overlay (used for all sizes now) */
+    .mobile-overlay {
+      position:fixed;inset:0;
+      background:rgba(2,6,23,0.35);
+      opacity:0;visibility:hidden;
+      transition:opacity .28s ease, visibility .28s ease;
+      z-index:1100;
+    }
+    .mobile-overlay.open{opacity:1;visibility:visible}
+
+    .mobile-nav {
+      position:fixed;
+      top:var(--safe-top);
+      right:0;
+      height:calc(100vh - var(--safe-top));
+      width:var(--mobile-nav-width);
+      transform:translateX(105%);
+      transition:transform .32s cubic-bezier(.2,.9,.2,1);
+      background:linear-gradient(180deg,#fff,#f5fbff);
+      box-shadow: -10px 28px 60px rgba(2,6,23,0.12);
+      padding:calc(84px + var(--safe-top)) 20px 24px;
+      z-index:1200;
+      display:flex;flex-direction:column;gap:10px;
+      border-top-left-radius:14px;
+      border-bottom-left-radius:14px;
+      -webkit-overflow-scrolling:touch;
+      overflow:auto;
+    }
+    .mobile-nav.open{transform:translateX(0)}
+    .mobile-nav a{display:block;padding:14px;border-radius:10px;text-decoration:none;color:var(--text);font-weight:700}
+    .mobile-nav a:active{opacity:.95}
+    .mobile-nav .nav-section-title{font-weight:700;margin-top:6px;margin-bottom:6px;color:var(--muted)}
+
+    /* HERO */
+    .hero{
+      display:grid;
+      gap:18px;
+      padding:22px;
+      border-radius:16px;
+      background:linear-gradient(180deg,#ffffff,#f3fbff);
+      align-items:center;
+    }
+    @media (min-width:900px){
+      .hero{grid-template-columns:1fr 380px;gap:24px}
+    }
+
+    .hero-left {}
+    .eyebrow{display:inline-block;background:rgba(14,165,161,0.08);padding:6px 10px;border-radius:999px;font-weight:700;color:var(--accent);font-size:0.9rem}
+    .headline{font-size:clamp(1.3rem,3.4vw,2rem);margin:6px 0 0;color:var(--text);line-height:1.05}
+    .sub{color:var(--muted);margin:6px 0 0;font-size:clamp(0.95rem,1.8vw,1.05rem)}
+
+    .hero-cta{display:flex;gap:12px;align-items:center;margin-top:12px;flex-wrap:wrap}
+    .cta-primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;padding:12px 16px;border-radius:12px;text-decoration:none;font-weight:800;
+      box-shadow:0 8px 18px rgba(14,165,161,0.12);
+      display:inline-block;
+      min-width:160px;text-align:center;
+    }
+    .cta-secondary{
+      background:transparent;border:1px solid rgba(15,23,36,0.06);
+      padding:11px 14px;border-radius:12px;color:var(--text);text-decoration:none;font-weight:700;
+      display:inline-block;min-width:140px;text-align:center;
+    }
+
+    .hero-art{
+      border-radius:12px;
+      min-height:220px;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(1200px 400px at 10% 10%, rgba(59,130,246,0.07), transparent 10%),
+        linear-gradient(180deg, rgba(14,165,161,0.06), rgba(59,130,246,0.03));
+      border:1px solid rgba(15,23,36,0.03);
+      padding:18px;
+    }
+    .hero-art .placeholder{
+      width:100%;max-width:300px;height:160px;border-radius:10px;background:linear-gradient(135deg,#fff,#f7feff);
+      display:grid;place-items:center;color:var(--muted);font-weight:700;
+      box-shadow:0 8px 26px rgba(2,6,23,0.04);
+      font-size:1rem;
+    }
+    @media (max-width:900px){ .hero-art{min-height:140px} .hero-art .placeholder{height:120px} }
+
+    /* Sections */
+    main{display:block;gap:28px}
+    section{margin-bottom:28px}
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px;
+      border:1px solid rgba(15,23,36,0.04);
+      box-shadow:0 8px 26px rgba(2,6,23,0.04);
+    }
+    h2{margin:6px 0 12px;font-size:clamp(1.02rem,2vw,1.22rem)}
+    h3{margin:8px 0;font-size:1rem}
+    p.lead{color:var(--muted);margin:0 0 12px}
+
+    /* Features grid: fluid */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px}
+    .feature{
+      display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;border:1px solid rgba(15,23,36,0.03);
+      background:linear-gradient(180deg,#fff,#fbfeff);
+    }
+    .icon{
+      width:46px;height:46px;border-radius:10px;display:grid;place-items:center;background:white;color:var(--text);font-weight:700;
+      box-shadow:0 6px 14px rgba(2,6,23,0.03);
+      flex-shrink:0;
+    }
+    .feature h4{margin:0 0 4px}
+    .feature p{margin:0;color:var(--muted)}
+
+    /* Program grid fluid */
+    .program-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .program-item{padding:14px;border-radius:10px;border:1px solid rgba(15,23,36,0.04);background:#fff}
+
+    .list{padding-left:18px;margin:0}
+    .list li{margin-bottom:8px;color:var(--muted)}
+
+    /* separators */
+    .sep{height:1px;background:linear-gradient(90deg, transparent, rgba(15,23,36,0.04), transparent);margin:16px 0;border-radius:4px}
+
+    /* contact */
+    .contact{display:grid;gap:6px}
+    .contact .title{font-weight:700}
+    .contact .info{color:var(--muted);line-height:1.5}
+    .contact .email{font-weight:700;color:var(--text);word-break:break-all}
+
+    footer{
+      margin-top:28px;padding:18px 0;color:var(--muted);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+      border-top:1px solid rgba(15,23,36,0.04);
+    }
+
+    /* accessibility focus */
+    a:focus{outline:3px solid rgba(59,130,246,0.16);outline-offset:3px;border-radius:6px}
+
+    .lang-btn {
+      background:transparent;border:1px solid rgba(15,23,36,0.06);padding:8px 10px;border-radius:10px;font-weight:700;cursor:pointer;
+    }
+    .lang-btn[aria-pressed="true"] { background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; border-color: transparent; }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none!important}
+    }
+
+    .muted{color:var(--muted)}
+
+    @media (max-width:640px){
+      header{padding:10px 0}
+      .brand h1{font-size:1rem}
+      .brand p{font-size:0.78rem}
+      .logo{width:48px;height:48px}
+      .hero-cta .cta-primary, .hero-cta .cta-secondary{min-width:140px;padding:12px 14px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand" aria-hidden="false">
+        <div id="logo" class="logo" aria-hidden="true" style="background-image: url(nihon_connect.jpeg); background-size:cover; background-position:center;"></div>
+        <div>
+          <h1 data-i18n="brand-title">Nihon Connect</h1>
+          <p data-i18n="brand-sub">フランス日本セクション サポート</p>
+        </div>
+      </div>
+
+      <div class="nav-wrap">
+        <!-- Desktop nav intentionally hidden from header (moved into hamburger panel) -->
+        <nav class="primary" aria-label="ページ内リンク" style="display:none;">
+          <a class="nav-link" href="#about" data-i18n="nav-about">私たちの強み</a>
+          <a class="nav-link" href="#programs" data-i18n="nav-programs">プログラム</a>
+          <a class="nav-link" href="#future" data-i18n="nav-future">将来設計</a>
+          <a class="nav-link" href="#contact" data-i18n="nav-contact">お問い合わせ</a>
+        </nav>
+
+        <!-- language switch hidden from header -->
+        <div class="lang-switch" aria-hidden="true" style="margin-left:8px; display:none;">
+          <button class="lang-btn" id="btn-jp" data-lang="ja" aria-pressed="true">JP</button>
+          <button class="lang-btn" id="btn-fr" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+
+        <!-- Hamburger (now the only visible control in header) -->
+        <button id="hamburger" class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span class="bar" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile overlay (for click outside) -->
+    <div id="mobile-overlay" class="mobile-overlay" tabindex="-1" aria-hidden="true"></div>
+
+    <!-- Mobile nav panel (now used on all screen sizes) -->
+    <nav id="mobile-nav" class="mobile-nav" aria-hidden="true" aria-label="Mobile navigation">
+      <div class="nav-section-title" aria-hidden="true" data-i18n="brand-sub">言語 / Lang</div>
+
+      <!-- links -->
+      <a href="#about" class="mobile-link" data-i18n="nav-about">私たちの強み</a>
+      <a href="#programs" class="mobile-link" data-i18n="nav-programs">プログラム</a>
+      <a href="#future" class="mobile-link" data-i18n="nav-future">将来設計</a>
+      <a href="#contact" class="mobile-link" data-i18n="nav-contact">お問い合わせ</a>
+
+      <!-- language buttons -->
+      <div style="margin-top:18px;border-top:1px solid rgba(15,23,36,0.03);padding-top:14px;">
+        <div style="font-weight:700;margin-bottom:8px" data-i18n="brand-sub">言語 / Lang</div>
+        <div style="display:flex;gap:8px;">
+          <button class="lang-btn" id="mb-btn-jp" data-lang="ja" aria-pressed="true">JP</button>
+          <button class="lang-btn" id="mb-btn-fr" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero card" aria-labelledby="hero-title">
+        <div class="hero-left">
+          <div>
+            <span class="eyebrow" data-i18n="eyebrow">フランス日本セクション在籍生徒様向け</span>
+            <h1 id="hero-title" class="headline" data-i18n="headline">日本語で学ぶ。理解が変わる — 学力と自信を育てる</h1>
+            <p class="sub" data-i18n="sub">選択科目（算数・フランス語・英語・音楽）を日本語で丁寧に解説。宿題サポート・テスト対策・将来設計まで、二本柱で支えます。</p>
+          </div>
+
+          <div class="hero-cta">
+            <a class="cta-primary" href="#programs" data-scroll data-i18n="cta-programs">プログラムを見る</a>
+            <a class="cta-secondary" href="#about" data-scroll data-i18n="cta-about">私たちの強みへ</a>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="placeholder" style="background-image: url(japanese_class.jpg);background-size: cover;"></div>
+        </div>
+      </section>
+
+      <!-- About / Strengths -->
+      <section id="about" class="card" aria-labelledby="about-title">
+        <h2 id="about-title" data-i18n="about-title">🎓 私たちの強み</h2>
+        <p class="lead" data-i18n="about-lead">選択科目がフランス語で教えられる環境にあるお子様向けに、日本語で「概念」を再構築することで理解を確実にします。学術用語や複雑な概念も母語で丁寧に説明します。</p>
+
+        <div class="features" role="list">
+          <div class="feature" role="listitem">
+            <div class="icon" aria-hidden="true">🧠</div>
+            <div>
+              <h4 data-i18n="f1-title">母語での概念定着</h4>
+              <p data-i18n="f1-desc">学術用語や概念を日本語でわかりやすく整理し、長期記憶へ結びつけます。</p>
+            </div>
+          </div>
+
+          <div class="feature" role="listitem">
+            <div class="icon" aria-hidden="true">🧩</div>
+            <div>
+              <h4 data-i18n="f2-title">個別最適化</h4>
+              <p data-i18n="f2-desc">学力診断に基づく個別カリキュラムで効率よく弱点を克服します。</p>
+            </div>
+          </div>
+
+          <div class="feature" role="listitem">
+            <div class="icon" aria-hidden="true">🎯</div>
+            <div>
+              <h4 data-i18n="f3-title">目標志向の授業</h4>
+              <p data-i18n="f3-desc">短期的なテスト対策から長期的な学習計画まで、目的に合わせて設計します。</p>
+            </div>
+          </div>
+
+          <div class="feature" role="listitem">
+            <div class="icon" aria-hidden="true">🎌</div>
+            <div>
+              <h4 data-i18n="f4-title">文化を込めた教材</h4>
+              <p data-i18n="f4-desc">漫画・アニメ等、興味を引く教材で「生きた日本語」を楽しみながら習得します。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="sep" aria-hidden="true"></div>
+
+      <!-- Programs -->
+      <section id="programs" class="card" aria-labelledby="programs-title">
+        <h2 id="programs-title" data-i18n="programs-title">📖 プログラム説明（詳細）</h2>
+        <p class="lead" data-i18n="programs-lead">以下は提供する二本柱のプログラム詳細です。</p>
+
+        <div class="program-grid" style="margin-top:12px;">
+          <!-- Program 1 -->
+          <article class="program-item" aria-labelledby="p1-title">
+            <h3 id="p1-title" data-i18n="p1-title">プログラム1: 日本語学習サポート</h3>
+            <p class="muted" data-i18n="p1-sub">宿題・テスト対策から、総合的な日本語力向上、モチベーション維持プログラムまで。</p>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p1-a-title">宿題・テスト対策</h4>
+              <ul class="list">
+                <li data-i18n="p1-a-1"><strong>テスト予習指導</strong> - 効果的な予習法を指導</li>
+                <li data-i18n="p1-a-2"><strong>漢字テスト対策</strong> - 意味と例文を結びつける定着する学習法で確実にマスター</li>
+                <li data-i18n="p1-a-3"><strong>読解力強化</strong> - 段階的に文章理解力を伸ばす</li>
+              </ul>
+            </div>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p1-b-title">総合的な日本語力向上</h4>
+              <ul class="list">
+                <li data-i18n="p1-b-1"><strong>語彙力強化プログラム</strong> - 実用語彙、漫画／本を教材に実践的読解</li>
+                <li data-i18n="p1-b-2"><strong>弱点克服カリキュラム</strong> - 個別分析に基づく改善プラン</li>
+              </ul>
+            </div>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p1-c-title">モチベーション維持</h4>
+              <ul class="list">
+                <li data-i18n="p1-c-1">漢字かるた・学習ゲームで楽しく継続</li>
+                <li data-i18n="p1-c-2">漫画・アニメを活用した興味ベースの教材選定</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Program 2 -->
+          <article class="program-item" aria-labelledby="p2-title">
+            <h3 id="p2-title" data-i18n="p2-title">プログラム2: 選択科目サポート</h3>
+            <p class="muted" data-i18n="p2-sub">フランス語で教えられる科目を日本語で再解説し、理解を深めます。</p>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p2-a-title">対応科目</h4>
+              <ul class="list">
+                <li data-i18n="p2-a-1"><strong>算数</strong> - 計算・文章題を日本語で丁寧に解説</li>
+                <li data-i18n="p2-a-2"><strong>フランス語</strong> - 文法や表現を日本語で整理</li>
+                <li data-i18n="p2-a-3"><strong>英語</strong> - 文法・語彙を日本語で理解</li>
+                <li data-i18n="p2-a-4"><strong>音楽</strong> - 音楽理論や楽曲分析を日本語でサポート</li>
+              </ul>
+            </div>
+
+            <div style="margin-top:10px">
+              <h4 data-i18n="p2-b-title">学習サポート内容</h4>
+              <ul class="list">
+                <li data-i18n="p2-b-1">宿題支援（フランス語の指示を日本語で解説）</li>
+                <li data-i18n="p2-b-2">テスト予習（範囲を日本語で事前学習）</li>
+                <li data-i18n="p2-b-3">学術用語の理解（専門用語を日本語で分かりやすく）</li>
+                <li data-i18n="p2-b-4">概念の定着（日本語説明で深い理解を実現）</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="sep" aria-hidden="true"></div>
+
+      <!-- Future planning -->
+      <section id="future" class="card" aria-labelledby="future-title">
+        <h2 id="future-title" data-i18n="future-title">🌟 将来設計サポート</h2>
+        <p class="lead" data-i18n="future-lead">日本語力とバイリンガルという強みを活かした将来設計を、一緒に描きます。</p>
+        <ul class="list" style="margin-top:8px">
+          <li data-i18n="future-1">日本語学習の目標設定と達成プラン</li>
+          <li data-i18n="future-2">バイリンガルとしての強みを活かすキャリアプランニング</li>
+          <li data-i18n="future-3">保護者との面談で長期ビジョンを共有</li>
+        </ul>
+      </section>
+
+      <div class="sep" aria-hidden="true"></div>
+
+      <!-- Contact -->
+      <section id="contact" class="card" aria-labelledby="contact-title">
+        <h2 id="contact-title" data-i18n="contact-title">お問い合わせ</h2>
+        <div class="contact">
+          <div class="title" data-i18n="contact-email-label">メール</div>
+          <div class="info">
+            <div class="email">nihon_connect.paris@outlook.com</div>
+            <div style="margin-top:6px;color:var(--muted)" data-i18n="contact-hours">対応時間: 平日 9:00〜18:00（中央ヨーロッパ時間）</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <strong>Nihon Connect</strong>
+        <div style="color:var(--muted)" data-i18n="footer-tag">日本語で学ぶ、未来をつくる。</div>
+      </div>
+
+      <div style="color:var(--muted)">© <span id="year"></span></div>
+    </footer>
+  </div>
+
+  <script>
+    // ---- translations object (JP / FR) ----
+    const translations = {
+      ja: {
+        "meta-title": "フランス日本セクション向け 日本語学習プログラム",
+        "meta-desc": "フランス日本セクション在籍生徒様向けの、日本語学習と選択科目サポートを併せ持つ総合プログラム。",
+        "brand-title": "Nihon Connect",
+        "brand-sub": "フランス日本セクション サポート",
+        "nav-about": "私たちの強み",
+        "nav-programs": "プログラム",
+        "nav-future": "将来設計",
+        "nav-contact": "お問い合わせ",
+        "eyebrow": "フランス日本セクション在籍生徒様向け",
+        "headline": "日本語で学ぶ。理解が変わる — 学力と自信を育てる",
+        "sub": "選択科目（算数・フランス語・英語・音楽）を日本語で丁寧に解説。宿題サポート・テスト対策・将来設計まで、二本柱で支えます。",
+        "cta-programs": "プログラムを見る",
+        "cta-about": "私たちの強みへ",
+        "about-title": "🎓 私たちの強み",
+        "about-lead": "選択科目がフランス語で教えられる環境にあるお子様向けに、日本語で「概念」を再構築することで理解を確実にします。学術用語や複雑な概念も母語で丁寧に説明します。",
+        "f1-title": "母語での概念定着",
+        "f1-desc": "学術用語や概念を日本語でわかりやすく整理し、長期記憶へ結びつけます。",
+        "f2-title": "個別最適化",
+        "f2-desc": "学力診断に基づく個別カリキュラムで効率よく弱点を克服します。",
+        "f3-title": "目標志向の授業",
+        "f3-desc": "短期的なテスト対策から長期的な学習計画まで、目的に合わせて設計します。",
+        "f4-title": "文化を込めた教材",
+        "f4-desc": "漫画・アニメ等、興味を引く教材で「生きた日本語」を楽しみながら習得します。",
+        "programs-title": "📖 プログラム説明（詳細）",
+        "programs-lead": "以下は提供する二本柱のプログラム詳細です。",
+        "p1-title": "プログラム1: 日本語学習サポート",
+        "p1-sub": "宿題・テスト対策から、総合的な日本語力向上、モチベーション維持プログラムまで。",
+        "p1-a-title": "宿題・テスト対策",
+        "p1-a-1": "<strong>テスト予習指導</strong> - 効果的な予習法を指導",
+        "p1-a-2": "<strong>漢字テスト対策</strong> - 意味と例文を結びつける定着する学習法で確実にマスター",
+        "p1-a-3": "<strong>読解力強化</strong> - 段階的に文章理解力を伸ばす",
+        "p1-b-title": "総合的な日本語力向上",
+        "p1-b-1": "<strong>語彙力強化プログラム</strong> - 実用語彙、漫画／本を教材に実践的読解",
+        "p1-b-2": "<strong>弱点克服カリキュラム</strong> - 個別分析に基づく改善プラン",
+        "p1-c-title": "モチベーション維持",
+        "p1-c-1": "漢字かるた・学習ゲームで楽しく継続",
+        "p1-c-2": "漫画・アニメを活用した興味ベースの教材選定",
+        "p2-title": "プログラム2: 選択科目サポート",
+        "p2-sub": "フランス語で教えられる科目を日本語で再解説し、理解を深めます。",
+        "p2-a-title": "対応科目",
+        "p2-a-1": "<strong>算数</strong> - 計算・文章題を日本語で丁寧に解説",
+        "p2-a-2": "<strong>フランス語</strong> - 文法や表現を日本語で整理",
+        "p2-a-3": "<strong>英語</strong> - 文法・語彙を日本語で理解",
+        "p2-a-4": "<strong>音楽</strong> - 音楽理論や楽曲分析を日本語でサポート",
+        "p2-b-title": "学習サポート内容",
+        "p2-b-1": "宿題支援（フランス語の指示を日本語で解説）",
+        "p2-b-2": "テスト予習（範囲を日本語で事前学習）",
+        "p2-b-3": "学術用語の理解（専門用語を日本語で分かりやすく）",
+        "p2-b-4": "概念の定着（日本語説明で深い理解を実現）",
+        "future-title": "🌟 将来設計サポート",
+        "future-lead": "日本語力とバイリンガルという強みを活かした将来設計を、一緒に描きます。",
+        "future-1": "日本語学習の目標設定と達成プラン",
+        "future-2": "バイリンガルとしての強みを活かすキャリアプランニング",
+        "future-3": "保護者との面談で長期ビジョンを共有",
+        "contact-title": "お問い合わせ",
+        "contact-email-label": "メール",
+        "contact-hours": "対応時間: 平日 9:00〜18:00（中央ヨーロッパ時間）",
+        "footer-tag": "日本語で学ぶ、未来をつくる。"
+      },
+      fr: {
+        "meta-title": "Programme d'apprentissage en japonais — Sections franco-japonaises",
+        "meta-desc": "Programme complet pour élèves en section japonaise en France : soutien en japonais et accompagnement des matières optionnelles.",
+        "brand-title": "Nihon Connect",
+        "brand-sub": "Soutien pour sections franco-japonaises",
+        "nav-about": "Nos atouts",
+        "nav-programs": "Programmes",
+        "nav-future": "Avenir",
+        "nav-contact": "Contact",
+        "eyebrow": "Pour les élèves en section japonaise en France",
+        "headline": "Apprendre en japonais. Transformer la compréhension — Renforcer compétences et confiance",
+        "sub": "Cours optionnels (maths, français, anglais, musique) expliqués en japonais. Aide aux devoirs, préparation aux contrôles et accompagnement pour l'avenir.",
+        "cta-programs": "Voir les programmes",
+        "cta-about": "Voir nos atouts",
+        "about-title": "🎓 Nos atouts",
+        "about-lead": "Pour les enfants dont les matières sont enseignées en français, nous reconstruisons les «concepts» en japonais afin d'assurer une compréhension solide. Nous expliquons soigneusement les termes académiques et les notions complexes en japonais.",
+        "f1-title": "Ancrage des concepts en langue maternelle",
+        "f1-desc": "Organisation claire des termes et concepts en japonais pour favoriser la mémoire à long terme.",
+        "f2-title": "Personnalisation",
+        "f2-desc": "Programmes individualisés basés sur un diagnostic pour corriger efficacement les faiblesses.",
+        "f3-title": "Cours orientés objectifs",
+        "f3-desc": "Conception adaptée aux besoins : préparation aux contrôles comme plan d'apprentissage long terme.",
+        "f4-title": "Matériel culturel",
+        "f4-desc": "Utilisation de mangas, anime et contenus attractifs pour apprendre le japonais vivant.",
+        "programs-title": "📖 Détails des programmes",
+        "programs-lead": "Voici les détails des deux piliers du programme.",
+        "p1-title": "Programme 1 : Soutien en japonais",
+        "p1-sub": "Aide aux devoirs, préparation aux contrôles, renforcement global des compétences en japonais et maintien de la motivation.",
+        "p1-a-title": "Aide aux devoirs & préparation",
+        "p1-a-1": "<strong>Préparation aux contrôles</strong> - Méthodes de révision efficaces",
+        "p1-a-2": "<strong>Préparation kanji</strong> - Méthodes d'ancrage par sens et exemples",
+        "p1-a-3": "<strong>Renforcement de la compréhension</strong> - Progression par paliers pour améliorer la compréhension écrite",
+        "p1-b-title": "Renforcement global du japonais",
+        "p1-b-1": "<strong>Programme de vocabulaire</strong> - Lecture pratique via mangas/livres",
+        "p1-b-2": "<strong>Plan de correction</strong> - Plan d'amélioration personnalisé",
+        "p1-c-title": "Maintien de la motivation",
+        "p1-c-1": "Jeux d'apprentissage (karuta kanji) pour continuer en s'amusant",
+        "p1-c-2": "Sélection de supports basée sur les intérêts (manga, anime)",
+        "p2-title": "Programme 2 : Soutien pour matières optionnelles",
+        "p2-sub": "Réexpliquons en japonais les matières enseignées en français pour renforcer la compréhension.",
+        "p2-a-title": "Matières prises en charge",
+        "p2-a-1": "<strong>Maths</strong> - Explications claires des calculs et problèmes en japonais",
+        "p2-a-2": "<strong>Français</strong> - Grammaire et expressions expliquées en japonais",
+        "p2-a-3": "<strong>Anglais</strong> - Grammaire et vocabulaire expliqués en japonais",
+        "p2-a-4": "<strong>Musique</strong> - Théorie et analyse en japonais",
+        "p2-b-title": "Contenu du soutien",
+        "p2-b-1": "Aide aux devoirs (consignes en français expliquées en japonais)",
+        "p2-b-2": "Préparation aux contrôles (révisions en japonais)",
+        "p2-b-3": "Compréhension des termes académiques (explications simplifiées)",
+        "p2-b-4": "Ancrage des concepts via explications en japonais",
+        "future-title": "🌟 Accompagnement pour l'avenir",
+        "future-lead": "Construisons ensemble un projet d'avenir tirant parti du bilinguisme et du niveau en japonais.",
+        "future-1": "Objectifs d'apprentissage et plan d'atteinte",
+        "future-2": "Plan de carrière valorisant le bilinguisme",
+        "future-3": "Entretien avec les parents pour partager la vision long terme",
+        "contact-title": "Contact",
+        "contact-email-label": "Email",
+        "contact-hours": "Horaires : Lun–Ven 9:00–18:00 (CET)",
+        "footer-tag": "Apprendre en japonais, construire l'avenir."
+      }
+    };
+
+    // ---- utility: apply translations ----
+    function applyTranslations(lang) {
+      document.documentElement.lang = lang;
+      const metaTitleEl = document.querySelector('title[data-i18n], title');
+      if (metaTitleEl) metaTitleEl.textContent = translations[lang]['meta-title'] || metaTitleEl.textContent;
+      const metaDesc = document.querySelector('meta[name="description"][data-i18n], meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', translations[lang]['meta-desc'] || metaDesc.getAttribute('content'));
+
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        const text = translations[lang] && translations[lang][key];
+        if (typeof text === 'string') {
+          el.innerHTML = text;
+        }
+      });
+
+      document.querySelectorAll('.lang-btn').forEach(btn=>{
+        const is = btn.dataset.lang === lang;
+        btn.setAttribute('aria-pressed', is ? 'true' : 'false');
+      });
+    }
+
+    // ---- language toggle setup ----
+    (function(){
+      const saved = localStorage.getItem('site-lang');
+      const defaultLang = saved || 'ja';
+      applyTranslations(defaultLang);
+
+      document.querySelectorAll('.lang-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const lang = btn.dataset.lang;
+          if (!lang) return;
+          localStorage.setItem('site-lang', lang);
+          applyTranslations(lang);
+        });
+      });
+    })();
+
+    // fill year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll
+    (function(){
+      function easeInOutCubic(t){
+        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+      }
+      function animateScrollTo(targetY, duration){
+        const startY = window.pageYOffset;
+        const diff = targetY - startY;
+        const startTime = performance.now();
+        if (Math.abs(diff) < 2) return;
+        return new Promise(resolve => {
+          function tick(now) {
+            const elapsed = now - startTime;
+            const t = Math.min(1, elapsed / duration);
+            const eased = easeInOutCubic(t);
+            window.scrollTo(0, Math.round(startY + diff * eased));
+            if (t < 1) requestAnimationFrame(tick);
+            else resolve();
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+
+      document.addEventListener('click', function(e){
+        const el = e.target.closest('a[href^="#"]');
+        if (!el) return;
+        const hash = el.getAttribute('href');
+        if (!hash || hash === '#') return;
+        const target = document.querySelector(hash);
+        if (!target) return;
+        e.preventDefault();
+        const rect = target.getBoundingClientRect();
+        const targetTop = window.pageYOffset + rect.top - 20;
+        const distance = Math.abs(window.pageYOffset - targetTop);
+        const duration = Math.max(400, Math.min(1000, Math.round(distance / 1.5)));
+        animateScrollTo(targetTop, duration).then(() => {
+          try { target.setAttribute('tabindex', '-1'); target.focus({preventScroll:true}); } catch(err){}
+          history.replaceState(null, '', hash);
+        });
+      }, {passive:false});
+    })();
+
+    // subtle reveal on scroll
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.style.opacity = 1;
+          e.target.style.transform = 'none';
+        }
+      });
+    }, {threshold:0.12});
+    document.querySelectorAll('.card').forEach(el=>{
+      el.style.opacity = 0;
+      el.style.transform = 'translateY(10px)';
+      el.style.transition = 'opacity .6s ease, transform .6s ease';
+      observer.observe(el);
+    });
+
+    // Menu toggle with overlay and focus management
+    (function(){
+      const hamb = document.getElementById('hamburger');
+      const mobile = document.getElementById('mobile-nav');
+      const overlay = document.getElementById('mobile-overlay');
+      const focusableSelector = 'a, button, [tabindex]:not([tabindex="-1"])';
+
+      function openMenu(){
+        mobile.classList.add('open'); overlay.classList.add('open');
+        mobile.setAttribute('aria-hidden','false'); overlay.setAttribute('aria-hidden','false');
+        hamb.setAttribute('aria-expanded','true');
+        hamb._lastFocused = document.activeElement;
+        const first = mobile.querySelector(focusableSelector);
+        if (first) first.focus();
+        document.body.style.overflow = 'hidden';
+      }
+      function closeMenu(){
+        mobile.classList.remove('open'); overlay.classList.remove('open');
+        mobile.setAttribute('aria-hidden','true'); overlay.setAttribute('aria-hidden','true');
+        hamb.setAttribute('aria-expanded','false');
+        if (hamb._lastFocused) hamb._lastFocused.focus();
+        document.body.style.overflow = '';
+      }
+
+      hamb.addEventListener('click', ()=>{
+        const expanded = hamb.getAttribute('aria-expanded') === 'true';
+        if (expanded) closeMenu(); else openMenu();
+      });
+
+      document.querySelectorAll('.mobile-link').forEach(a=> a.addEventListener('click', ()=> closeMenu()));
+      overlay.addEventListener('click', closeMenu);
+
+      document.addEventListener('keydown', (e)=>{
+        if (e.key === 'Escape') {
+          if (mobile.classList.contains('open')) closeMenu();
+        }
+        if (mobile.classList.contains('open') && (e.key === 'Tab')) {
+          const focusables = Array.from(mobile.querySelectorAll(focusableSelector)).filter(el => !el.hasAttribute('disabled'));
+          if (focusables.length === 0) return;
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      });
+
+      window.addEventListener('resize', ()=>{
+        // keep behaviour consistent; no forced close needed but ensure overlay removed if out of view
+        if (!mobile.classList.contains('open')) {
+          overlay.classList.remove('open');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
